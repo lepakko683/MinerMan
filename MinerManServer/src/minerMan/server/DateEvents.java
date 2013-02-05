@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DateEvents {
 	List<DateEvent> devents = new ArrayList<DateEvent>();
-	final String netlocation = "https://raw.github.com/lepakko683/LeCraft/master/DateEvents.txt";
+	final String netlocation = "https://raw.github.com/lepakko683/MinerMan/master/MinerManRes/DateEvents.txt";
 	
 	public DateEvents(){
 		List<String> strIn = new ArrayList<String>();
@@ -32,17 +32,14 @@ public class DateEvents {
 		}catch(IOException ioex){
 			ioex.printStackTrace();
 		}finally{
-			//System.out.println("finally");
+			
 		}
-		
-		String e = "6:7";
 		if(strIn.size()>0){
 			for(String out : strIn){
 				String[] props = out.split(":");
 				DateEvent dea = new DateEvent(props[2],props[3],props[1]);
 				dea.setDesc(props[4]);
 				devents.add(dea);
-				//dea.isActive();
 				System.out.println(dea.toString());
 			}
 		}
