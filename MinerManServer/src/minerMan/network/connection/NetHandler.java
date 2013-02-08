@@ -12,6 +12,14 @@ public class NetHandler {
 	List<ClientConnection> connects = new ArrayList<ClientConnection>();
 	ServerSocket server;
 	
+	public NetHandler(){
+		try{
+			server = new ServerSocket(7888);
+		}catch(IOException iox){
+			
+		}
+	}
+	
 	public void updateConnections(boolean sendPack, PacketBase pack){
 		
 		if(connects.size()>0){
@@ -32,12 +40,18 @@ public class NetHandler {
 		connects.add(new ClientConnection(client));
 	}
 	
-	public void onUpdate() throws IOException{
-		Socket sock = server.accept();
-		if(sock != null){
-			this.addConnection(sock);
+	public void onUpdate(){
+		try{
+			Socket sock = server.accept();
+			if(sock != null){
+				System.out.println("CONNECTED!!!");
+				this.addConnection(sock);
+			}
+			this.updateConnections(false, null);
+		}catch(IOException iox){
+			//iox.printStackTrace();
+			System.out.println("failed");
 		}
-		this.updateConnections(false, null);
 	}
 	
 	public void startServerNet(int port) throws IOException{

@@ -12,21 +12,24 @@ public class MinerManServer {
 	public PacketHandler packHandler;
 	public boolean running;
 	public String message;
+	private Timer timer;
 	
 	public MinerManServer(){
+		running = false;
 		network = new NetHandler();
 		packHandler = new PacketHandler();
 		message = packHandler.message;
+		timer = new Timer();
 		while(running){
+			network.onUpdate();
 			PacketMsg mesg = new PacketMsg(Long.toString((System.currentTimeMillis())));
 			network.sendPacket(mesg);
 			System.out.println(message);
+			timer.run();
 		}
 	}
 	
 	public static void main(String[] args){
-		//new MinerManServer();
-		
 		//DateEvent de0 = new DateEvent("", "", "");
 		DateEvents dES = new DateEvents();
 		//System.out.println(de0.isActive());

@@ -24,6 +24,7 @@ public class DateEvents {
 				srIn = br.readLine();
 				if(srIn != null){
 					strIn.add(srIn);
+					//System.out.println(strIn);
 				}
 			}while(srIn != null);
 			br.close();
