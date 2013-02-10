@@ -11,7 +11,9 @@ public class ClientConnection {
 	DataOutputStream outs;
 	DataInputStream ins;
 	Socket client;
-	
+	public boolean isDisconnected(){
+		return false;
+	}
 	protected ClientConnection(Socket client){
 		this.client = client;
 		

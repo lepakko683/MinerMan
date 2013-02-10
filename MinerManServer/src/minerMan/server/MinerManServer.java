@@ -3,10 +3,13 @@ package minerMan.server;
 import minerMan.network.connection.NetHandler;
 import minerMan.network.connection.PacketHandler;
 import minerMan.network.packet.PacketMsg;
+import minerMan.server.gui.ServerGuiMain;
+import minerMan.tile.WorldTile;
 
 public class MinerManServer {
 	public static MinerManServer instance = new MinerManServer();
 	public static final int UPDFRATE = 1;
+	public static int connections = 0;
 	
 	public NetHandler network;
 	public PacketHandler packHandler;
@@ -15,24 +18,25 @@ public class MinerManServer {
 	private Timer timer;
 	
 	public MinerManServer(){
-		running = false;
+		ServerGuiMain gui0 = new ServerGuiMain(400,400);
+		gui0.setTitle("Hello, minerMan!");
+		running = true;
 		network = new NetHandler();
 		packHandler = new PacketHandler();
-		message = packHandler.message;
 		timer = new Timer();
+		WorldTile tiles = new WorldTile();
 		while(running){
+			
 			network.onUpdate();
-			PacketMsg mesg = new PacketMsg(Long.toString((System.currentTimeMillis())));
-			network.sendPacket(mesg);
-			System.out.println(message);
+			System.out.println("exec");
+			gui0.onUpdate(Integer.toString(network.getConnections()));
 			timer.run();
+			
 		}
 	}
 	
 	public static void main(String[] args){
-		//DateEvent de0 = new DateEvent("", "", "");
-		DateEvents dES = new DateEvents();
-		//System.out.println(de0.isActive());
+		new MinerManServer();
 	}
 
 }

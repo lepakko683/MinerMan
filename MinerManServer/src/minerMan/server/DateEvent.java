@@ -70,6 +70,6 @@ public class DateEvent {
 		this.desc = str;
 	}
 	public String toString(){
-		return "DateEvent - " + this.name + " B: " + this.begin + " E: " + this.end + " A: " + this.isActive();
+		return "DateEvent - " + this.name + " Desc: " + this.getDesc() + " B: " + this.begin + " E: " + this.end + " A: " + this.isActive();
 	}
 }

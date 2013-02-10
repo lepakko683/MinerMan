@@ -1,6 +1,8 @@
 package minerMan.network.connection;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 
 public class NetHandler extends Thread {
@@ -8,10 +10,13 @@ public class NetHandler extends Thread {
 	private String ip;
 	
 	private Socket socket;
+	private OutputStream out;
+	private BufferedWriter bw;
 	
 	public NetHandler(int port, String ip){
 		this.port = port;
 		this.ip = ip;
+		
 	}
 	
 	public void connect(){
@@ -25,7 +30,24 @@ public class NetHandler extends Thread {
 	}
 	
 	public void onUpdate(){
-		this.connect();
+		if(this.socket == null){
+			this.connect();
+		}else{
+			if(out == null){
+				try{
+				out = socket.getOutputStream();
+				}catch(IOException iox){
+					iox.printStackTrace();
+				}
+			}else{
+				try {
+					out.write(1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
 		
 	}
 	

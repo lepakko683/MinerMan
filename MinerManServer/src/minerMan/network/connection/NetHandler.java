@@ -8,15 +8,26 @@ import java.util.List;
 
 import minerMan.network.packet.PacketBase;
 
-public class NetHandler {
+public class NetHandler extends Thread {
 	List<ClientConnection> connects = new ArrayList<ClientConnection>();
 	ServerSocket server;
 	
 	public NetHandler(){
 		try{
 			server = new ServerSocket(7888);
+			this.start();
 		}catch(IOException iox){
 			
+		}catch(IllegalThreadStateException illeg){
+			System.out.println("ThreadState!!!");
+		}
+	}
+	
+	public int getConnections(){
+		if(connects.size()>0){
+			return this.connects.size();
+		}else{
+			return 0;
 		}
 	}
 	
@@ -25,8 +36,14 @@ public class NetHandler {
 		if(connects.size()>0){
 			
 			for(ClientConnection co : connects){
+				if(co.isDisconnected())
 				if(sendPack){
 					co.sendPacket(pack);
+					try {
+						System.out.println(co.ins.readInt());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 					co.onUpdate();
 
@@ -41,6 +58,19 @@ public class NetHandler {
 	}
 	
 	public void onUpdate(){
+		this.updateConnections(false, null);
+	}
+	@Override
+	public void run(){
+		this.acceptConnect();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void acceptConnect() {
 		try{
 			Socket sock = server.accept();
 			if(sock != null){
@@ -53,7 +83,7 @@ public class NetHandler {
 			System.out.println("failed");
 		}
 	}
-	
+
 	public void startServerNet(int port) throws IOException{
 		server = new ServerSocket(port);
 		
